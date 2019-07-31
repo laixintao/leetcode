@@ -50,37 +50,23 @@ def test(*args):
     print("ans=", ans)
 
 
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
 class Solution:
-    def trap(self, height: List[int]) -> int:
-        dp = [0] * (len(height) + 1)
-        max_height = [0] * (len(height) + 1)
-
-        for index in range(1, len(height) + 1):
-            current = height[index - 1]
-
-            for _start in range(index - 2, 0, -1):
-                if height[_start] >= current:
-                    start = _start
-                    break
-            else:
-                start = max_height[index - 1]
-
-            latter = 0
-            limit = min(height[start], current)
-            for new in range(start + 1, index - 1):
-                latter += (limit - height[new])
-
-            dp[index] = dp[start+1] + latter
-
-            print(f"{index=} {current=} {start=} {dp[index]=}")
-
-            if height[max_height[index - 1]] <= current:
-                max_height[index] = index - 1
-            else:
-                max_height[index] = max_height[index - 1]
-
-        print(max_height)
-        return dp[len(height)]
+    def hasCycle(self, head: ListNode) -> bool:
+        fast = head
+        slow = head
+        while fast.next != None and fast.next.next != None:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                return True
+        return False
+        
 
 
 if __name__ == "__main__":
