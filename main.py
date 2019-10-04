@@ -46,38 +46,24 @@ def test(*args):
     case += 1
     print(f"{args=}")
     s = Solution()
-    ans = s.readBinaryWatch(*args)
+    ans = s.uniquePaths(*args)
     print("ans=", ans)
 
 
 class Solution:
-    def rotateRight(self, head: ListNode, k: int) -> ListNode:
-        if not head:
-            return None
-        if head.next is None:
-            return head
-        total = 1
+    def uniquePaths(self, m: int, n: int) -> int:
+        possible = [[1] * (n + 1) for _ in range(m + 1)]
 
-        tail = head
-        while tail.next:
-            total += 1
-            tail = tail.next
+        for _m in range(2, m+1):
+            for _n in range(2, n+1):
+                possible[_m][_n] = sum(possible[_m-down][_n-1] for down in range(_m))
+                print(f"{_m=} {_n=} {possible[_m][_n]=}")
 
-        if k % total == 0:
-            return head
-
-        rotate = total - k % total - 1
-
-        counter = head
-        while rotate:
-            counter = counter.next
-            rotate -= 1
-
-        new_head = counter.next
-        counter.next = None
-        tail.next = head
-        return new_head
+        return possible[m][n]
 
 
 if __name__ == "__main__":
-    test(1)
+    test(2, 2)
+    test(3, 2)
+    test(7, 3)
+
