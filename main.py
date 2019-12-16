@@ -46,24 +46,35 @@ def test(*args):
     case += 1
     print(f"{args=}")
     s = Solution()
-    ans = s.uniquePaths(*args)
+    ans = s.uniquePathsWithObstacles(*args)
     print("ans=", ans)
 
 
 class Solution:
-    def uniquePaths(self, m: int, n: int) -> int:
-        possible = [[1] * (n + 1) for _ in range(m + 1)]
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        if not obstacleGrid:
+            return 0
+        m = len(obstacleGrid)
+        n = len(obstacleGrid[0])
+        dp = [[0] * n for _ in range(m)]
 
-        for _m in range(2, m+1):
-            for _n in range(2, n+1):
-                possible[_m][_n] = sum(possible[_m-down][_n-1] for down in range(_m))
-                print(f"{_m=} {_n=} {possible[_m][_n]=}")
+        dp[0][0] = 0 if obstacleGrid[0][0] else 1
+        print(f"{m=} {n=} {dp[0][0]=}")
 
-        return possible[m][n]
+        for i in range( m):
+            for j in range( n):
+                if obstacleGrid[i][j]:
+                    dp[i][j] = 0
+                else:
+                    if i >=1:
+                        dp[i][j] += dp[i - 1][j]
+                    if j>=1:
+                        dp[i][j] += dp[i][j-1]
+
+                print(f"{i=} {j=} {dp[i][j]=}")
+        return dp[-1][-1]
 
 
 if __name__ == "__main__":
-    test(2, 2)
-    test(3, 2)
-    test(7, 3)
-
+    test([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
+    test([[1,0]])
