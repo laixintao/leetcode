@@ -57,23 +57,20 @@ class Solution:
         carry = False
         ans = []
         for i, j in zip_longest(reversed(a), reversed(b)):
-            if not i:
-                ans.append(j)
-            elif not j:
-                ans.append(i)
+            i = i or 0
+            j = j or 0
+            temp = int(i) + int(j) + carry
+            if temp == 3:
+                ans.append(1)
+            elif temp == 2:
+                carry = True
+                ans.append(0)
+            elif temp == 1:
+                carry = False
+                ans.append(1)
             else:
-                temp = int(i) + int(j) + carry
-                if temp == 3:
-                    ans.append(1)
-                elif temp == 2:
-                    carry = True
-                    ans.append(0)
-                elif temp == 1:
-                    carry = False
-                    ans.append(1)
-                else:
-                    carry = False
-                    ans.append(0)
+                carry = False
+                ans.append(0)
         if carry:
             ans.append(1)
         return "".join([str(x) for x in reversed(ans)])
