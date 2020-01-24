@@ -52,22 +52,26 @@ def test(*args):
 
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-        from bisect import bisect_left
-
         """
         Do not return anything, modify nums1 in-place instead.
         """
-        left = 0
-        right = m
-        while nums2:
-            num = nums2.pop(0)
-            left = bisect_left( nums1,num, left, right)
-            right += 1
-            nums1.insert(left, num)
-        nums1[n+m:] = []
+        end = m+n-1
+        while m-1>=0 and n-1>=0:
+            if nums1[m-1] < nums2[n-1]:
+                nums1[end] = nums2[n-1]
+                n-=1
+            else:
+                nums1[end] = nums1[m-1]
+                m-=1
+            end -= 1
+        print(nums1)
+        if n-1>=0:
+            nums1[0:n] = nums2[0:n]
         return nums1
+
 
 
 if __name__ == "__main__":
     test([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3)
+    test([0], 0, [1], 1)
 
