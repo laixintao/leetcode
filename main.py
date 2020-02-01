@@ -46,7 +46,9 @@ def test(*args):
     case += 1
     print(f"{args=}")
     s = Solution()
-    ans = s.merge(*args)
+    # find solution method
+    function = [method for method in dir(s) if not method.startswith("__")][0]
+    ans = getattr(s, function)(*args)
     print("ans=", ans)
 
 
