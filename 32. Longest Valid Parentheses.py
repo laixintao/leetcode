@@ -1,6 +1,9 @@
 from typing import List
 
 
+"""
+动态规划
+"""
 from collections import Counter
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
