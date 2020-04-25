@@ -28,27 +28,20 @@ def create_tree(values):
 
 
 class Solution:
-    def dfs_height(self, root):
+    def max_min_height(self, root):
         if not root:
-            return -1
-        left = self.dfs_height(root.left)
-        if left == -1:
-            return -1
-        right = self.dfs_height(root.right)
-        if right == -1:
-            return -1
-        if abs(right - left) > 1:
-            return -1
-        return max(left, right)
+            return 0, 0
+        left_max, left_min = self.max_min_height(root.left)
+        right_max, right_min = self.max_min_height(root.right)
+        _max = max(left_max, right_max)
+        _min = min(left_min, right_min)
+        return _max + 1, _min + 1
 
     def isBalanced(self, root: TreeNode) -> bool:
-        if not root:
+        _max, _min = self.max_min_height(root)
+        if _max - _min <= 1:
             return True
-        left = self.get_depth(root.left)
-        right = self.get_depth(root.right)
-        if max(right, left) - min(left, right) > 1:
-            return False
-        return self.isBalanced(root.left) and self.isBalanced(root.right)
+        return False
 
 
 def test(*args):
