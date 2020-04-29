@@ -28,31 +28,22 @@ def create_tree(values):
 
 
 class Solution:
-    def do(self, digits: List, index):
-        if index == -1:
-            digits.insert(0, 1)
-            return
-        ans = digits[index] + 1
-        if ans < 10:
-            digits[index] = ans
-            return
-
-        digits[index] = 0
-        self.do(digits, index - 1)
-
-    def plusOne(self, digits: List[int]) -> List[int]:
-        self.do(digits, len(digits) - 1)
-        return digits
+    def singleNumber(self, nums: List[int]) -> int:
+        if not nums:
+            return None
+        x = nums[0]
+        for num in nums[1:]:
+            x ^= num
+        return x
 
 
 def test(*args):
     print(f"{args=}")
     s = Solution()
-    ans = s.plusOne(*args)
+    ans = s.singleNumber(*args)
     print("ans=", ans)
 
 
 if __name__ == "__main__":
-    test([1,2,3])
-    test([1,2,9])
-    test([9,9,9])
+    test([2, 2, 1])
+    test([4, 1, 2, 1, 2])
