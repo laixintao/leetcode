@@ -31,14 +31,21 @@ import bisect
 
 
 class Solution:
-    def merge(self, intervals):
-        out = []
-        for i in sorted(intervals, key=lambda i: i[0]):
-            if out and i[0] <= out[-1][1]:
-                out[-1][1] = max(out[-1][1], i[1])
-            else:
-                out += i,
-        return out
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        starts = []
+        ends = []
+        for pair in intervals:
+            start, end = pair
+            start_insert = bisect.bisect_left(ends, start)
+            end_insert = bisect.bisect_right(starts, end)
+            print(f"{start_insert=} {end_insert=}")
+            # merge (start_insert, end_insert)
+            starts[start_insert:end_insert] = [
+                min(starts[start_insert:end_insert] + [start])
+            ]
+            ends[start_insert:end_insert] = [max(ends[start_insert:end_insert] + [end])]
+            print(f"{starts=} {ends=}")
+        return list(zip(starts,ends))
 
 
 def test(*args):
