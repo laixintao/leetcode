@@ -28,36 +28,31 @@ def create_tree(values):
 
 
 class Solution:
-    def generateMatrix(self, n: int) -> List[List[int]]:
-        matrix = [[0 for _ in range(n)] for __ in range(n)]
-        order_index = row = col = 0
-        count = 1
-        order = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        while count <= n ** 2:
-            matrix[row][col] = count
-            print(f"{row=} {col=} {count=}")
-            next_row, next_col = order[order_index]
-            if 0 <= row + next_row < n and 0 <= next_col + col < n and matrix[row+next_row][col+next_col] == 0:
-                pass
-            else:
-                order_index += 1
-                if order_index == 4:
-                    order_index = 0
+    def do(self, digits: List, index):
+        if index == -1:
+            digits.insert(0, 1)
+            return
+        ans = digits[index] + 1
+        if ans < 10:
+            digits[index] = ans
+            return
 
-            next_row, next_col = order[order_index]
-            row += next_row
-            col += next_col
-            count += 1
-        return matrix
+        digits[index] = 0
+        self.do(digits, index - 1)
+
+    def plusOne(self, digits: List[int]) -> List[int]:
+        self.do(digits, len(digits) - 1)
+        return digits
 
 
 def test(*args):
     print(f"{args=}")
     s = Solution()
-    ans = s.generateMatrix(*args)
+    ans = s.plusOne(*args)
     print("ans=", ans)
 
 
 if __name__ == "__main__":
-    test(2)
-    test(3)
+    test([1,2,3])
+    test([1,2,9])
+    test([9,9,9])
