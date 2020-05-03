@@ -26,6 +26,9 @@ class TreeNode:
     def __str__(self):
         return f"[{self.val}]({self.left}, {self.right})"
 
+    def __repr__(self):
+        return f"TreeNode({self.val})"
+
 
 # Definition for singly-linked list.
 class ListNode:
@@ -35,42 +38,40 @@ class ListNode:
 
 
 class Solution:
-    def sortedListToBST(self, head: ListNode) -> TreeNode:
-        if not head:
-            return None
+    def search(self, node, sum, exists, current_sum, ans):
+        # print(f"{current_sum=} {exists=} {node=}")
+        current_sum += node.val
+        exists = exists + [node.val]
+        if current_sum == sum:
+            # print(f"hit")
+            if node.left is None and node.right is None:
+                # print("append")
+                ans.append(exists)
+                return
 
-        temp = head
-        size = 0
-        while temp:
-            size += 1
-            temp = temp.next
+        # print(f"{current_sum=} {exists=} {node=} {node.left=} {node.right=}")
+        if node.left and node.left.val:
+            # print(f"-> {node.left=}")
+            self.search(node.left, sum, exists, current_sum, ans)
+        if current_sum < sum and node.right and node.right.val:
+            # print(f"-> {node.right=}")
+            self.search(node.right, sum, exists, current_sum, ans)
 
-        # must using a global variable (or closure)
-        self.runner = head
-        return self.to_bst(0, size - 1)
-
-    def to_bst(self, left, right):
-        if left > right:
-            return None
-
-        mid = (left + right) // 2
-        left_node = self.to_bst(left, mid - 1)
-        node = TreeNode(self.runner.val)
-        self.runner = self.runner.next
-        right_node = self.to_bst(mid + 1, right)
-
-        node.left = left_node
-        node.right = right_node
-        return node
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        if not root or not root.val:
+            return []
+        ans = []
+        self.search(root, sum, [], 0, ans)
+        return ans
 
 
 def test(*args):
-    print(f"{args=}")
+    # print(f"{args=}")
     s = Solution()
-    ans = s.rangeSumBST(*args)
-    print("ans=", ans)
+    ans = s.pathSum(*args)
+    # print("ans=", ans)
 
 
 if __name__ == "__main__":
-    root = create_tree([10, 5, 15, 3, 7, None, 18])
-    test(root, 7, 15)
+    root = create_tree([5, 4, 8, 11, None, 13, 4, 7, 2, None, None, 5, 1])
+    test(root, 22)
