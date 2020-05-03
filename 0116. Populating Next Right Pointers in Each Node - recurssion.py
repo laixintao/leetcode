@@ -44,21 +44,20 @@ class ListNode:
 
 
 class Solution:
-    def connect(self, root):
-        if not root:
-            return None
-        pre = root
-        current = None
-        while pre.left:
-            current = pre
-            print(f"{current.val=} {pre.val=}")
-            while current:
-                current.left.next = current.right
-                if current.next:
-                    current.right.next = current.next.left
-                current = current.next
-            pre = pre.left
-        return root
+    def helper(self, root, right):
+        print(f"{root.val=} -> {right}")
+        root.next = right
+
+        if root.left:
+            print(f"{root.val=} {root.left.val=} {root.right.val=}")
+            self.helper(root.left, root.right)
+            if right:
+                self.helper(root.right, right.left)
+            else:
+                self.helper(root.right, None)
+
+    def connect(self, root: "Node") -> "Node":
+        self.helper(root, None)
 
 
 def test(*args):
