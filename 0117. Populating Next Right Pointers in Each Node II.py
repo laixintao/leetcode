@@ -50,18 +50,20 @@ class Solution:
         next_level = root
         current = None
         while 1:
-            next_level = None
             current = next_level
+            next_level = None
             to_change = None
             while current:
                 if current.left:
                     if to_change:
+                        print(f"{to_change and to_change.val} -> {current.left.val}")
                         to_change.next = current.left
                     else:
                         next_level = current.left
                     to_change = current.left
                 if current.right:
                     if to_change:
+                        print(f"{to_change and to_change.val} -> {current.right.val}")
                         to_change.next = current.right
                     else:
                         next_level = current.right
