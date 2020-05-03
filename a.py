@@ -48,22 +48,15 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        if root is None or root.val is None:
-            return
-
-        left = root.left
-        right = root.right
-
-        self.flatten(left)
-        self.flatten(right)
-
-        root.left = None
-        root.right = left
-
-        while root.right and root.right.val is not None:
+        while root:
+            if root.left:
+                left_end = left = root.left
+                while left_end.right:
+                    left_end = left_end.right
+                left_end.right = root.right
+                root.right = left
+                root.left = None
             root = root.right
-
-        root.right = right
 
 
 def test(*args):
