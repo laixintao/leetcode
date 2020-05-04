@@ -58,7 +58,7 @@ class Solution:
         index = 0
         ans = []
         while index < len(nums):
-            while indexes_window and indexes_window[0] <= index - k:
+            if indexes_window and indexes_window[0] <= index - k:
                 indexes_window.popleft()
 
             while indexes_window and nums[indexes_window[-1]] <= nums[index]:
