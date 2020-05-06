@@ -46,32 +46,21 @@ def test(*args):
     case += 1
     print(f"{args=}")
     s = Solution()
-    ans = s.permuteUnique(*args)
+    ans = s.rotate(*args)
     print("ans=", ans)
 
 
 class Solution:
-    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
-        import copy
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        matrix.reverse()
 
-        def go(nums, current, ans):
-            if not nums:
-                ans.append(copy.copy(current))
-                return
-            used = []
-            for index, value in enumerate(nums):
-                if value in used:
-                    continue
-                used.append(value)
-                current.append(value)
-                go(nums[:index] + nums[index + 1 :], current, ans)
-                current.pop()
-
-        ans = []
-        go(nums, [], ans)
-        return ans
+        for row in range(len(matrix)):
+            for col in range(row, len(matrix[row])):
+                matrix[row][col], matrix[col][row] = matrix[col][row], matrix[row][col]
 
 
 if __name__ == "__main__":
-    test([1, 2, 3])  # 213
-    test([1, 1, 3])  # 213
+    test([[1, 2, 3], [4, 5, 6], [7, 8, 9]],)
