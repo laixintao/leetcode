@@ -58,37 +58,27 @@ class Solution:
         Do not return anything, modify matrix in-place instead.
         """
 
-        if not matrix:
-            return
-
         left_zero = False
 
-        for row_index, row in enumerate(matrix):
-            for col_index, num in enumerate(row):
-                if col_index == 0:
-                    if num == 0:
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if j == 0:
+                    if matrix[i][j] == 0:
                         left_zero = True
-                    continue
-                if num == 0:
-                    print(f"{row_index=} {col_index=}")
-                    matrix[row_index][0] = 0
-                    matrix[0][col_index] = 0
+                elif matrix[i][j] == 0:
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
 
         print(matrix)
-        for index, num in enumerate(matrix[0]):
-            if index == 0:
-                continue
-            if num == 0:
-                for row in matrix:
-                    row[index] = 0
 
-        for index in range(len(matrix)):
-            if matrix[index][0] == 0:
-                matrix[index] = [0] * len(matrix[index])
-
-        if left_zero:
-            for row in matrix:
-                row[0] = 0
+        for i in range(len(matrix)-1, -1, -1):
+            for j in range(len(matrix[i])-1, -1, -1):
+                if j == 0:
+                    if left_zero:
+                        matrix[i][0] = 0
+                else:
+                    if matrix[0][j] == 0 or matrix[i][0] == 0:
+                        matrix[i][j] = 0
 
         return matrix
 
@@ -96,4 +86,4 @@ class Solution:
 if __name__ == "__main__":
     test([[1, 1, 1], [1, 0, 1], [1, 1, 1]])
     test([[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]])
-    test([[1],[0]])
+    test([[1], [0]])
