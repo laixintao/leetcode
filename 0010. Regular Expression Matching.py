@@ -42,28 +42,42 @@ case = 0
 
 def test(*args):
     global case
-    # print(f"---case {case}---")
+    print(f"---case {case}---")
     case += 1
-    # print(f"{args=}")
+    print(f"{args=}")
     s = Solution()
-    ans = s.singleNonDuplicate(*args)
-    # print("ans=", ans)
+    ans = s.isMatch(*args)
+    print("ans=", ans)
 
 
 class Solution:
-    def singleNonDuplicate(self, nums: List[int]) -> int:
-        # print(nums)
-        if len(nums) == 1:
-            return nums[0]
-        left_end = len(nums) // 2
-        if not left_end & 1:
-            left_end += 1
-        # print(left_end)
-        if nums[left_end] == nums[left_end - 1]:
-            return self.singleNonDuplicate(nums[left_end + 1 :])
-        return self.singleNonDuplicate(nums[:left_end])
+    """动态规划解决"""
+
+    def isMatch(self, s, p):
+        def match(i, j):
+            if i == 0:
+                return False
+            if p[j - 1] == ".":
+                return True
+            return s[i - 1] == p[j - 1]
+
+        dp = [[False for _ in range(len(p) + 1)] for __ in range(len(s) + 1)]
+        dp[0][0] = True
+
+        for i in range(len(s) + 1):
+            for j in range(1, len(p) + 1):
+                if p[j - 1] == "*":
+                    dp[i][j] |= dp[i][j - 2]
+                    if match(i, j-1):
+                        dp[i][j] |= dp[i - 1][j]
+                else:
+                    if match(i, j):
+                        dp[i][j] = dp[i - 1][j - 1]
+                print(f"{i=} {j=} {dp[i][j]=}")
+
+        return dp[len(s)][len(p)]
 
 
 if __name__ == "__main__":
-    test([1, 1, 2])
-    test([1, 1, 2, 3, 3, 4, 4, 8, 8])
+    test("aa", "a")
+    test("aa", "a*")
